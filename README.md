@@ -1,4 +1,4 @@
-# MyNewAngular
+# MyNewAngular - This project was created to display examples of Angular Lifecycle hooks.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
 
