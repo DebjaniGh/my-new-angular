@@ -1,19 +1,60 @@
-<form [formGroup]="contactForm">
+<!-- Contact Form with validation -->
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+  <!-- Name field with required validation -->
   <div>
     <label for="name">Name:</label>
     <input id="name" type="text" formControlName="name" />
+    @if (contactForm.get("name")?.invalid && contactForm.get("name")?.touched) {
+      <p style="color: red; font-size: 12px; margin: 0">Name is required</p>
+    }
   </div>
+  <!-- Email field with required and email format validation -->
   <div>
     <label for="email">Email:</label>
     <input id="email" type="email" formControlName="email" />
+    @if (
+      contactForm.get("email")?.invalid && contactForm.get("email")?.touched
+    ) {
+      @if (contactForm.get("email")?.errors?.["required"]) {
+        <p style="color: red; font-size: 12px; margin: 0">Email is required</p>
+      }
+      @if (contactForm.get("email")?.errors?.["email"]) {
+        <p style="color: red; font-size: 12px; margin: 0">
+          Invalid email format
+        </p>
+      }
+    }
   </div>
+  <!-- Contact number field with required validation -->
   <div>
     <label for="contact_no">Contact No:</label>
     <input id="contact_no" type="tel" formControlName="contact_no" />
+    @if (
+      contactForm.get("contact_no")?.invalid &&
+      contactForm.get("contact_no")?.touched
+    ) {
+      <p style="color: red; font-size: 12px; margin: 0">
+        Contact No is required
+      </p>
+    }
   </div>
+  <!-- Message field (optional) -->
   <div>
     <label for="message">Message:</label>
     <textarea id="message" formControlName="message"></textarea>
   </div>
-  <button type="submit">Submit</button>
+  <!-- Submit button disabled during loading or when form is invalid -->
+  <button type="submit" [disabled]="isLoading || contactForm.invalid">
+    Submit
+  </button>
 </form>
+<!-- Success message display -->
+@if (successMsg) {
+  <p style="color: green">{{ successMsg }}</p>
+}
+<!-- Error message display -->
+@if (errorMsg) {
+  <p style="color: red">{{ errorMsg }}</p>
+}
+<!-- Loading spinner overlay -->
+<div *ngIf="isLoading" class="spinner"></div>
